@@ -9,6 +9,7 @@
     "commit": "git-cz"
   },
   "dependencies": {
+    "normalize.css": "^8.0.1",
     "vue": "^3.2.31",
     "vue-router": "^4.0.12"
   },
@@ -25,6 +26,7 @@
     "eslint-plugin-vue": "^8.2.0",
     "husky": "^7.0.4",
     "prettier": "^2.5.1",
+    "sass": "^1.49.10",
     "vite": "^2.8.4"
   },
   "config": {
