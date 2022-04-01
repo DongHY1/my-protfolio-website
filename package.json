@@ -9,7 +9,9 @@
     "commit": "git-cz"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.1.1",
     "normalize.css": "^8.0.1",
+    "tone": "^14.7.77",
     "vue": "^3.2.31",
     "vue-router": "^4.0.12"
   },
