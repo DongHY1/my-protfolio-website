@@ -2,28 +2,28 @@
     <div class="sequencer">
         <div class="header" :class="{ drum: tab === 0, lead: tab === 1 }">
             <button>
-                <i class="fas" :class="{ 'fa-drum': tab === 0, 'fa-music': tab === 1 }"></i>
+                <span>{{tab===0?'🥁':'🎹'}}</span>
             </button>
             <button>
-                <i class="fas fa-random"></i>
+                <span>🔀</span>
             </button>
             <div class="play">
                 <button @click="playHandler">
-                    <i class="fas" :class="{ 'fa-play': !isPlaying, 'fa-pause': isPlaying }"></i>
+                    <span>{{isPlaying?'◼':'▶'}}</span>
                 </button>
             </div>
             <div class="bpm">
                 <button @click="BPM -= 5">
-                    <i class="fas fa-minus"></i>
+                   <span>➖</span>
                 </button>
-                <input type="text" :value="BPM" readonly />
+                <input type="text" :value="BPM" readonly style="color: white;"/>
                 <span>bpm</span>
                 <button @click="BPM += 5">
-                    <i class="fas fa-plus"></i>
+                   <span>➕</span>
                 </button>
             </div>
             <button>
-                <i class="fas fa-trash-alt"></i>
+                <span>🚮</span>
             </button>
         </div>
         <div class="pad">
@@ -186,11 +186,11 @@ function playHandler() {
     }
 }
 function play() {
-    isPlaying.value = true
+    isPlaying.value = !isPlaying.value
     Tone.Transport.start()
 }
 function stop() {
-    isPlaying.value = false
+    isPlaying.value = !isPlaying.value
     Tone.Transport.stop()
 }
 </script>
@@ -210,6 +210,9 @@ function stop() {
         width: 100%;
         // background-color: #bfa;
         .bpm {
+            span{
+                color: white;
+            }
         }
     }
     .pad {
