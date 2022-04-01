@@ -120,7 +120,7 @@ function clickHandle(arr, i) {
 }
 // 默认创建长度为16的空数组
 function getEmptyArray(length = 16) {
-    return Array.from({ length }, () => 0)
+    return new Array(length).fill(0)
 }
 // 建立乐器
 const kick = new Tone.MembraneSynth({
