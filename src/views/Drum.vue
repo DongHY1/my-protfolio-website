@@ -112,6 +112,7 @@ let sequence = reactive({
         tomH: getEmptyArray(),
     }
 })
+let index = ref(-1)
 // 处理点击事件
 // kick 数组的第n个元素被点击
 function clickHandle(arr, i) {
@@ -164,11 +165,17 @@ tomH.volume.value = 0
 // poly.set('volume', 2)
 //建立播放系统
 Tone.Transport.bpm.value = BPM.value
-Tone.Transport.scheduleRepeat((time)=>{
-console.log(time)
- let i = Math.round(Tone.Transport.getSecondsAtTime() * (BPM.value/ 60) % 16)
-if(sequence.drum.kick[i])kick.triggerAttackRelease('C2', '4n', time)
-},'16n')
+Tone.Transport.scheduleRepeat((time) => {
+    index.value = ++index.value % 16
+    const i = index.value
+    if (sequence.drum.kick[i]) kick.triggerAttackRelease('C2', '4n', time)
+    if (sequence.drum.hihat[i]) hihat.triggerAttackRelease('8n', time)
+    if (sequence.drum.snare[i]) snare.trigger(time)
+    if(sequence.drum.tomL[i])tomL.triggerAttackRelease('E2', '4n', time)
+    if(sequence.drum.tomM[i])tomL.triggerAttackRelease('G2', '4n', time)
+    if(sequence.drum.tomH[i])tomL.triggerAttackRelease('A#2', '4n', time)
+
+}, '16n')
 
 
 // 点击播放
