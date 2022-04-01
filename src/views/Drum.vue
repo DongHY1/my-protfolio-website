@@ -166,11 +166,12 @@ tomH.volume.value = 0
 Tone.Transport.bpm.value = BPM.value
 Tone.Transport.scheduleRepeat((time)=>{
 console.log(time)
+ let i = Math.round(Tone.Transport.getSecondsAtTime() * (BPM.value/ 60) % 16)
 if(sequence.drum.kick[i])kick.triggerAttackRelease('C2', '4n', time)
 },'16n')
 
 
-// 点击开始 可以播放
+// 点击播放
 function playHandler() {
     if (isPlaying.value) {
         stop()
