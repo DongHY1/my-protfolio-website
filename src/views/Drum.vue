@@ -174,7 +174,6 @@ Tone.Transport.scheduleRepeat((time) => {
     if(sequence.drum.tomL[i])tomL.triggerAttackRelease('E2', '4n', time)
     if(sequence.drum.tomM[i])tomL.triggerAttackRelease('G2', '4n', time)
     if(sequence.drum.tomH[i])tomL.triggerAttackRelease('A#2', '4n', time)
-
 }, '16n')
 
 
