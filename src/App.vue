@@ -73,7 +73,7 @@ function leave(e) {
           @mouseleave="leave"
           @click="router.replace({ path: '/home' })"
         >
-          🏠
+          🌏
         </li>
       </ul>
     </div>
