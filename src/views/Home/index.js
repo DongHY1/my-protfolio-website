@@ -13,6 +13,7 @@ export function initThree() {
     0.1,
     1000
   );
+  camera.position.z = 15;
   const renderer = new THREE.WebGLRenderer({
     //   添加抗锯齿
     antialias: true,
@@ -49,10 +50,22 @@ export function initThree() {
   );
   atmosphere.scale.set(1.1, 1.1, 1.1);
   scene.add(atmosphere);
-  camera.position.z = 15;
   const group = new THREE.Group();
   group.add(sphere);
   scene.add(group);
+  // 星空背景
+  const starVertices = []
+  for(let i=0;i<10000;i++){
+    const x = (Math.random()-0.5)*2000
+    const y = (Math.random()-0.5)*2000
+    const z = -(Math.random())*1000
+    starVertices.push(x,y,z)
+  }
+  const starGeometry = new THREE.BufferGeometry()
+  starGeometry.setAttribute('position',new THREE.Float32BufferAttribute(starVertices,3))
+  const starMeterial = new THREE.PointsMaterial({color:0xffffff})
+  const stars = new THREE.Points(starGeometry,starMeterial)
+  scene.add(stars)
   const mouse = {
     x: undefined,
     y: undefined,
@@ -60,7 +73,7 @@ export function initThree() {
   function animate() {
     requestAnimationFrame(animate);
     renderer.render(scene, camera);
-    // sphere.rotation.y += 0.001;
+    sphere.rotation.y += 0.001;
     // group.rotation.y = mouse.x*0.5;
     gsap.to(group.rotation,{
       x:-mouse.y*0.3,
