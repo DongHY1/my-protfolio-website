@@ -13,12 +13,12 @@
                 </button>
             </div>
             <div class="bpm">
-                <button @click="BPM -= 5">
+                <button @click="handleBPMDecrease">
                     <span>➖</span>
                 </button>
                 <input type="number" :value="BPM" readonly style="color: white;"/>
                 <span>bpm</span>
-                <button @click="BPM += 5">
+                <button @click="handleBPMIncrease">
                     <span>➕</span>
                 </button>
             </div>
@@ -116,6 +116,16 @@ let index = ref(-1)
 // kick 数组的第n个元素被点击
 function clickHandle(arr, i) {
     arr[i] = !arr[i]
+}
+function handleBPMIncrease(){
+    if(BPM.value<180){
+        BPM.value += 5
+    }
+}
+function handleBPMDecrease(){
+    if(BPM.value>60){
+        BPM.value-=5
+    }
 }
 // 默认创建长度为16的空数组
 function getEmptyArray(length = 16) {
