@@ -20,6 +20,10 @@ const router = createRouter({
       path: "/drum",
       component: ()=>import("../views/Drum.vue"),
     },
+    {
+      path: "/home",
+      component: ()=>import("../views/Home.vue"),
+    },
   ],
 });
 
