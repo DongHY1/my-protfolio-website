@@ -127,7 +127,7 @@ const drumArrayConfig = {
 const leadArrayConfig = {
     isTwoDimensional: true,
     row: 16,
-    list:6,
+    list: 6,
     num: 0
 }
 let sequence = reactive({
@@ -158,12 +158,13 @@ function handleBPMDecrease() {
     }
 }
 function handleRandomPlay() {
-    sequence.drum.kick = getRandomArray()
-    sequence.drum.hihat = getRandomArray()
-    sequence.drum.snare = getRandomArray()
-    sequence.drum.tomL = getRandomArray()
-    sequence.drum.tomM = getRandomArray()
-    sequence.drum.tomH = getRandomArray()
+    sequence.drum.kick = getRandomArray(false)
+    sequence.drum.hihat = getRandomArray(false)
+    sequence.drum.snare = getRandomArray(false)
+    sequence.drum.tomL = getRandomArray(false)
+    sequence.drum.tomM = getRandomArray(false)
+    sequence.drum.tomH = getRandomArray(false)
+    sequence.lead = getRandomArray(true)
 }
 function handleClearPlay() {
     sequence.drum.kick = getEmptyArray(drumArrayConfig)
@@ -197,18 +198,41 @@ function getEmptyArray({ isTwoDimensional, row, list, num }) {
     }
 }
 // 随机把数组里的值赋值为true
-function getRandomArray(length = 16) {
-    const arr = new Array(length).fill(0)
-    let bool
-    for (let i = 0; i < length; i++) {
-        if (Math.random() <= 0.3) {
-            bool = true
-        } else {
-            bool = false
+/**
+ * 
+ * @param {} config
+ *  
+ */
+function getRandomArray(isTwoDimensional) {
+    if (isTwoDimensional) {
+        // 二维数组操作
+        const arr = getEmptyArray(leadArrayConfig)
+        let bool
+        for(let i = 0;i<arr.length;i++){
+            for(let j =0;j<arr[0].length;j++){
+                if(Math.random()<=0.3){
+                    bool = true
+                }else{
+                    bool=false
+                }
+                arr[i][j] = bool
+            }
+        } 
+        return arr
+    } else {
+        // 一维数组操作
+        const arr = getEmptyArray(drumArrayConfig)
+        let bool
+        for (let i = 0; i < arr.length; i++) {
+            if (Math.random() <= 0.3) {
+                bool = true
+            } else {
+                bool = false
+            }
+            arr[i] = bool
         }
-        arr[i] = bool
+        return arr
     }
-    return arr
 }
 // 建立乐器
 const kick = new Tone.MembraneSynth({
