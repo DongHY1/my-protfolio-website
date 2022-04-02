@@ -1,11 +1,24 @@
 <template>
-  <div class="home"></div>
+  <div id="home">
+   
+  </div>
 </template>
 
 <script setup>
-import * as THREE from 'three'
-console.log(THREE)
+import { onMounted } from 'vue'
+import { initThree } from './Home/index'
+onMounted(() => {
+  initThree()
+})
+
 </script>
 
 <style lang="scss" scoped>
+#home {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+}
 </style>
