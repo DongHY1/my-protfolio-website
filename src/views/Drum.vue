@@ -3,9 +3,8 @@
         <div
             class="header"
             :class="{ drum: tab === 0, lead: tab === 1 }"
-            @click="handleToggleInstrument"
         >
-            <button>
+            <button @click="handleToggleInstrument">
                 <span>{{ tab === 0 ? '🥁' : '🎹' }}</span>
             </button>
             <button @click="handleRandomPlay">
