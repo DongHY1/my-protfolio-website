@@ -16,7 +16,7 @@
                 <button @click="BPM -= 5">
                     <span>➖</span>
                 </button>
-                <input type="text" :value="BPM" readonly style="color: white;" />
+                <input type="number" :value="BPM" readonly style="color: white;"/>
                 <span>bpm</span>
                 <button @click="BPM += 5">
                     <span>➕</span>
@@ -97,7 +97,7 @@
 
 <script setup>
 import * as Tone from "tone";
-import { ref, reactive } from "vue";
+import { ref, reactive,watchEffect } from "vue";
 let tab = ref(0);
 let isPlaying = ref(false)
 let BPM = ref(120)
@@ -183,7 +183,9 @@ tomM.volume.value = 0
 tomH.volume.value = 0
 poly.volume.value = -10
 //建立播放系统
-Tone.Transport.bpm.value = BPM.value
+watchEffect(()=>{
+    Tone.Transport.bpm.value = BPM.value
+})
 Tone.Transport.scheduleRepeat((time) => {
     index.value = ++index.value % 16
     const i = index.value
