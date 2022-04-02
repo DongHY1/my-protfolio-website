@@ -4,7 +4,7 @@
             <button>
                 <span>{{ tab === 0 ? '🥁' : '🎹' }}</span>
             </button>
-            <button>
+            <button @click="handleRandomPlay">
                 <span>🔀</span>
             </button>
             <div class="play">
@@ -35,8 +35,8 @@
                         :key="`kick_${i - 1}`"
                         class="item"
                         :class="{ 'active': !!sequence.drum.kick[i - 1] }"
-                        @mousedown="clickHandle(sequence.drum.kick, i - 1)"
-                        @touchstart="clickHandle(sequence.drum.kick, i - 1)"
+                        @mousedown="handleBlockClick(sequence.drum.kick, i - 1)"
+                        @touchstart="handleBlockClick(sequence.drum.kick, i - 1)"
                     ></div>
                 </div>
                 <div class="hihat">
@@ -45,8 +45,8 @@
                         class="item"
                         :key="`hihat_${i - 1}`"
                         :class="{ 'active': !!sequence.drum.hihat[i - 1] }"
-                        @mousedown="clickHandle(sequence.drum.hihat, i - 1)"
-                        @touchstart="clickHandle(sequence.drum.hihat, i - 1)"
+                        @mousedown="handleBlockClick(sequence.drum.hihat, i - 1)"
+                        @touchstart="handleBlockClick(sequence.drum.hihat, i - 1)"
                     ></div>
                 </div>
                 <div class="snare">
@@ -55,8 +55,8 @@
                         class="item"
                         :key="`snare_${i - 1}`"
                         :class="{ 'active': !!sequence.drum.snare[i - 1] }"
-                        @mousedown="clickHandle(sequence.drum.snare, i - 1)"
-                        @touchstart="clickHandle(sequence.drum.snare, i - 1)"
+                        @mousedown="handleBlockClick(sequence.drum.snare, i - 1)"
+                        @touchstart="handleBlockClick(sequence.drum.snare, i - 1)"
                     ></div>
                 </div>
                 <div class="tomL">
@@ -65,8 +65,8 @@
                         class="item"
                         :key="`tomL_${i - 1}`"
                         :class="{ 'active': !!sequence.drum.tomL[i - 1] }"
-                        @mousedown="clickHandle(sequence.drum.tomL, i - 1)"
-                        @touchstart="clickHandle(sequence.drum.tomL, i - 1)"
+                        @mousedown="handleBlockClick(sequence.drum.tomL, i - 1)"
+                        @touchstart="handleBlockClick(sequence.drum.tomL, i - 1)"
                     ></div>
                 </div>
                 <div class="tomM">
@@ -75,8 +75,8 @@
                         class="item"
                         :key="`tomL_${i - 1}`"
                         :class="{ 'active': !!sequence.drum.tomM[i - 1] }"
-                        @mousedown="clickHandle(sequence.drum.tomM, i - 1)"
-                        @touchstart="clickHandle(sequence.drum.tomM, i - 1)"
+                        @mousedown="handleBlockClick(sequence.drum.tomM, i - 1)"
+                        @touchstart="handleBlockClick(sequence.drum.tomM, i - 1)"
                     ></div>
                 </div>
                 <div class="tomH">
@@ -85,8 +85,8 @@
                         class="item"
                         :key="`tomL_${i - 1}`"
                         :class="{ 'active': !!sequence.drum.tomH[i - 1] }"
-                        @mousedown="clickHandle(sequence.drum.tomH, i - 1)"
-                        @touchstart="clickHandle(sequence.drum.tomH, i - 1)"
+                        @mousedown="handleBlockClick(sequence.drum.tomH, i - 1)"
+                        @touchstart="handleBlockClick(sequence.drum.tomH, i - 1)"
                     ></div>
                 </div>
             </div>
@@ -114,7 +114,7 @@ let sequence = reactive({
 let index = ref(-1)
 // 处理点击事件
 // kick 数组的第n个元素被点击
-function clickHandle(arr, i) {
+function handleBlockClick(arr, i) {
     arr[i] = !arr[i]
 }
 function handleBPMIncrease(){
@@ -126,6 +126,9 @@ function handleBPMDecrease(){
     if(BPM.value>60){
         BPM.value-=5
     }
+}
+function handleRandomPlay(){
+
 }
 // 默认创建长度为16的空数组
 function getEmptyArray(length = 16) {
