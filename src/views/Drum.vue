@@ -8,7 +8,7 @@
                 <span>🔀</span>
             </button>
             <div class="play">
-                <button @click="playHandler">
+                <button @click="handlePlay">
                     <span>{{ isPlaying ? '◼' : '▶' }}</span>
                 </button>
             </div>
@@ -212,7 +212,7 @@ Tone.Transport.scheduleRepeat((time) => {
 
 
 // 点击播放
-function playHandler() {
+function handlePlay() {
     if (isPlaying.value) {
         stop()
     } else {
