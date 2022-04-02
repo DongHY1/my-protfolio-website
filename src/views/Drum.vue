@@ -1,9 +1,6 @@
 <template>
     <div class="sequencer">
-        <div
-            class="header"
-            :class="{ drum: tab === 0, lead: tab === 1 }"
-        >
+        <div class="header" :class="{ drum: tab === 0, lead: tab === 1 }">
             <button @click="handleToggleInstrument">
                 <span>{{ tab === 0 ? '🥁' : '🎹' }}</span>
             </button>
@@ -99,7 +96,18 @@
                     ></div>
                 </div>
             </div>
-            <div class="lead set" v-show="tab === 1"></div>
+            <div class="lead set" v-show="tab === 1">
+                <div class="kick" v-for="(row, i) in sequence.lead" :key="`lead_${i}`">
+                    <div
+                        v-for="j in 16"
+                        :key="`lead_${i}_${j - 1}`"
+                        class="item"
+                        :class="{ 'active': !!sequence.lead[i][j - 1] }"
+                        @mousedown="handleBlockClick(sequence.lead[i], j - 1)"
+                        @touchstart="handleBlockClick(sequence.lead[i], j - 1)"
+                    ></div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -110,15 +118,28 @@ import { ref, reactive, watchEffect } from "vue";
 let tab = ref(0);
 let isPlaying = ref(false)
 let BPM = ref(120)
+const drumArrayConfig = {
+    isTwoDimensional: false,
+    row: 16,
+    list: 0,
+    num: 0
+}
+const leadArrayConfig = {
+    isTwoDimensional: true,
+    row: 16,
+    list:6,
+    num: 0
+}
 let sequence = reactive({
     drum: {
-        kick: getEmptyArray(),
-        hihat: getEmptyArray(),
-        snare: getEmptyArray(),
-        tomL: getEmptyArray(),
-        tomM: getEmptyArray(),
-        tomH: getEmptyArray(),
-    }
+        kick: getEmptyArray(drumArrayConfig),
+        hihat: getEmptyArray(drumArrayConfig),
+        snare: getEmptyArray(drumArrayConfig),
+        tomL: getEmptyArray(drumArrayConfig),
+        tomM: getEmptyArray(drumArrayConfig),
+        tomH: getEmptyArray(drumArrayConfig),
+    },
+    lead: getEmptyArray(leadArrayConfig)
 })
 let index = ref(-1)
 // 处理点击事件
@@ -145,19 +166,35 @@ function handleRandomPlay() {
     sequence.drum.tomH = getRandomArray()
 }
 function handleClearPlay() {
-    sequence.drum.kick = getEmptyArray()
-    sequence.drum.hihat = getEmptyArray()
-    sequence.drum.snare = getEmptyArray()
-    sequence.drum.tomL = getEmptyArray()
-    sequence.drum.tomM = getEmptyArray()
-    sequence.drum.tomH = getEmptyArray()
+    sequence.drum.kick = getEmptyArray(drumArrayConfig)
+    sequence.drum.hihat = getEmptyArray(drumArrayConfig)
+    sequence.drum.snare = getEmptyArray(drumArrayConfig)
+    sequence.drum.tomL = getEmptyArray(drumArrayConfig)
+    sequence.drum.tomM = getEmptyArray(drumArrayConfig)
+    sequence.drum.tomH = getEmptyArray(drumArrayConfig)
+    sequence.lead = getEmptyArray(leadArrayConfig)
 }
 function handleToggleInstrument() {
     tab.value === 0 ? tab.value = 1 : tab.value = 0
 }
-// 默认创建长度为16的空数组
-function getEmptyArray(length = 16) {
-    return new Array(length).fill(0)
+/**
+ * 
+ * @param {*} config
+ * isTwoDimensional:true:二维数组;false:一维数组
+ * row:一维数组/二维数组的行数
+ * list:二维数组的列数
+ * num:填充数 
+ */
+function getEmptyArray({ isTwoDimensional, row, list, num }) {
+    if (isTwoDimensional) {
+        let arr = new Array(list)
+        for (let i = 0; i < arr.length; i++) {
+            arr[i] = new Array(row).fill(num)
+        }
+        return arr
+    } else {
+        return new Array(row).fill(num)
+    }
 }
 // 随机把数组里的值赋值为true
 function getRandomArray(length = 16) {
@@ -226,6 +263,16 @@ function snareTrigger(time) {
     noise.triggerAttack(time)
     poly.triggerAttackRelease(['C2', 'D#2', 'G2'], '16n', time)
 }
+const keyboardOsc = new Tone.Oscillator().toDestination()
+keyboardOsc.type = 'triangle'
+const keyboardEnv = new Tone.Envelope({
+    attack: 0.001,
+    decay: 0.1,
+    sustain: 0.3,
+    release: 0.02,
+}).toDestination();
+const keyboardPoly = new Tone.PolySynth({ keyboardOsc, keyboardEnv }).toDestination()
+
 // ----snare end---------
 // 乐器音量
 kick.volume.value = 6
@@ -234,6 +281,7 @@ tomL.volume.value = 0
 tomM.volume.value = 0
 tomH.volume.value = 0
 poly.volume.value = -10
+keyboardPoly.volume.value = 2
 //建立播放系统
 watchEffect(() => {
     Tone.Transport.bpm.value = BPM.value
@@ -247,6 +295,12 @@ Tone.Transport.scheduleRepeat((time) => {
     if (sequence.drum.tomL[i]) tomL.triggerAttackRelease('E2', '4n', time)
     if (sequence.drum.tomM[i]) tomM.triggerAttackRelease('G2', '4n', time)
     if (sequence.drum.tomH[i]) tomH.triggerAttackRelease('A#2', '4n', time)
+    if (sequence.lead[0][i]) keyboardPoly.triggerAttackRelease('C4', '16n', time)
+    if (sequence.lead[1][i]) keyboardPoly.triggerAttackRelease('D4', '16n', time)
+    if (sequence.lead[2][i]) keyboardPoly.triggerAttackRelease('E4', '16n', time)
+    if (sequence.lead[3][i]) keyboardPoly.triggerAttackRelease('F4', '16n', time)
+    if (sequence.lead[4][i]) keyboardPoly.triggerAttackRelease('G4', '16n', time)
+    if (sequence.lead[5][i]) keyboardPoly.triggerAttackRelease('A4', '16n', time)
 }, '16n')
 
 
