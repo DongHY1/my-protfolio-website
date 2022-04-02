@@ -405,7 +405,7 @@ function stop() {
                     background-color: white;
                 }
                 .active {
-                    background-color: red;
+                    background: linear-gradient(to right, #96e6a1, #d4fc79);
                 }
             }
         }
