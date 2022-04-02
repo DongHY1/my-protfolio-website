@@ -27,7 +27,13 @@
             </button>
         </div>
         <div class="pad">
-            <div class="timeline"></div>
+            <div class="timeline">
+                <div
+                    v-for="i in 16"
+                    :key="`time_${i}`"
+                    :class="{ 'time': true, 'active': index === i - 1 }"
+                />
+            </div>
             <div class="drum set" v-show="tab === 0">
                 <div class="kick">
                     <div
@@ -147,7 +153,7 @@ function handleClearPlay() {
 function getEmptyArray(length = 16) {
     return new Array(length).fill(0)
 }
- // 随机把数组里的值赋值为true
+// 随机把数组里的值赋值为true
 function getRandomArray(length = 16) {
     const arr = new Array(length).fill(0)
     let bool
@@ -277,6 +283,22 @@ function stop() {
         }
     }
     .pad {
+        .timeline {
+            .time {
+                display: inline-block;
+                width: 6%;
+                height: 3px;
+                background-color: #ff5733;
+                opacity: 0.2;
+                margin: 2px 2px;
+                border-radius: 5px;
+                transition: all 0.1s;
+            }
+            & .active {
+                height: 10px;
+                opacity: 1;
+            }
+        }
         .set {
             margin: 5px 0;
             .kick,
