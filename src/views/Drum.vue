@@ -16,13 +16,13 @@
                 <button @click="handleBPMDecrease">
                     <span>➖</span>
                 </button>
-                <input type="number" :value="BPM" readonly style="color: white;"/>
+                <input type="number" :value="BPM" readonly style="color: white;" />
                 <span>bpm</span>
                 <button @click="handleBPMIncrease">
                     <span>➕</span>
                 </button>
             </div>
-            <button>
+            <button @click="handleClearPlay">
                 <span>🚮</span>
             </button>
         </div>
@@ -97,7 +97,7 @@
 
 <script setup>
 import * as Tone from "tone";
-import { ref, reactive,watchEffect } from "vue";
+import { ref, reactive, watchEffect } from "vue";
 let tab = ref(0);
 let isPlaying = ref(false)
 let BPM = ref(120)
@@ -117,22 +117,49 @@ let index = ref(-1)
 function handleBlockClick(arr, i) {
     arr[i] = !arr[i]
 }
-function handleBPMIncrease(){
-    if(BPM.value<180){
+function handleBPMIncrease() {
+    if (BPM.value < 180) {
         BPM.value += 5
     }
 }
-function handleBPMDecrease(){
-    if(BPM.value>60){
-        BPM.value-=5
+function handleBPMDecrease() {
+    if (BPM.value > 60) {
+        BPM.value -= 5
     }
 }
-function handleRandomPlay(){
-
+function handleRandomPlay() {
+    sequence.drum.kick = getRandomArray()
+    sequence.drum.hihat = getRandomArray()
+    sequence.drum.snare = getRandomArray()
+    sequence.drum.tomL = getRandomArray()
+    sequence.drum.tomM = getRandomArray()
+    sequence.drum.tomH = getRandomArray()
+}
+function handleClearPlay() {
+    sequence.drum.kick = getEmptyArray()
+    sequence.drum.hihat = getEmptyArray()
+    sequence.drum.snare = getEmptyArray()
+    sequence.drum.tomL = getEmptyArray()
+    sequence.drum.tomM = getEmptyArray()
+    sequence.drum.tomH = getEmptyArray()
 }
 // 默认创建长度为16的空数组
 function getEmptyArray(length = 16) {
     return new Array(length).fill(0)
+}
+ // 随机把数组里的值赋值为true
+function getRandomArray(length = 16) {
+    const arr = new Array(length).fill(0)
+    let bool
+    for (let i = 0; i < length; i++) {
+        if (Math.random() <= 0.3) {
+            bool = true
+        } else {
+            bool = false
+        }
+        arr[i] = bool
+    }
+    return arr
 }
 // 建立乐器
 const kick = new Tone.MembraneSynth({
@@ -182,8 +209,8 @@ const env = new Tone.Envelope({
     release: 0.08,
     releaseCurve: 'exponential'
 }).toDestination();
-const poly = new Tone.PolySynth({osc,env}).toDestination();
-function snareTrigger(time){
+const poly = new Tone.PolySynth({ osc, env }).toDestination();
+function snareTrigger(time) {
     noise.triggerAttack(time)
     poly.triggerAttackRelease(['C2', 'D#2', 'G2'], '16n', time)
 }
@@ -196,7 +223,7 @@ tomM.volume.value = 0
 tomH.volume.value = 0
 poly.volume.value = -10
 //建立播放系统
-watchEffect(()=>{
+watchEffect(() => {
     Tone.Transport.bpm.value = BPM.value
 })
 Tone.Transport.scheduleRepeat((time) => {
