@@ -30,7 +30,8 @@
     "husky": "^7.0.4",
     "prettier": "^2.5.1",
     "sass": "^1.49.10",
-    "vite": "^2.8.4"
+    "vite": "^2.8.4",
+    "vite-plugin-string": "^1.1.2"
   },
   "config": {
     "commitizen": {

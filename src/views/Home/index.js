@@ -1,5 +1,7 @@
 import * as THREE from "three";
 import earth from "@/assets/Home/earth-4k.jpg";
+import vertexShader from './shaders/vertex.glsl'
+import fragmentShader from './shaders/fragment.glsl'
 export function initThree() {
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(
@@ -20,9 +22,16 @@ export function initThree() {
   //   创建一个球体
   const sphere = new THREE.Mesh(
     new THREE.SphereGeometry(5, 50, 50),
-    new THREE.MeshBasicMaterial({
+    new THREE.ShaderMaterial({
       //   color: 0xff0000,
-      map: new THREE.TextureLoader().load(earth),
+      vertexShader,
+      fragmentShader:fragmentShader,
+      uniforms:{
+        globeTexture:{
+          value:new THREE.TextureLoader().load(earth)
+        }
+      }
+      // map: new THREE.TextureLoader().load(earth),
     })
   );
   scene.add(sphere);
