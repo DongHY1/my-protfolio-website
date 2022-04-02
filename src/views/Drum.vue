@@ -1,6 +1,10 @@
 <template>
     <div class="sequencer">
-        <div class="header" :class="{ drum: tab === 0, lead: tab === 1 }">
+        <div
+            class="header"
+            :class="{ drum: tab === 0, lead: tab === 1 }"
+            @click="handleToggleInstrument"
+        >
             <button>
                 <span>{{ tab === 0 ? '🥁' : '🎹' }}</span>
             </button>
@@ -148,6 +152,9 @@ function handleClearPlay() {
     sequence.drum.tomL = getEmptyArray()
     sequence.drum.tomM = getEmptyArray()
     sequence.drum.tomH = getEmptyArray()
+}
+function handleToggleInstrument() {
+    tab.value === 0 ? tab.value = 1 : tab.value = 0
 }
 // 默认创建长度为16的空数组
 function getEmptyArray(length = 16) {
