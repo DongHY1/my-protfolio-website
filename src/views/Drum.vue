@@ -2,24 +2,24 @@
     <div class="sequencer">
         <div class="header" :class="{ drum: tab === 0, lead: tab === 1 }">
             <button>
-                <span>{{tab===0?'🥁':'🎹'}}</span>
+                <span>{{ tab === 0 ? '🥁' : '🎹' }}</span>
             </button>
             <button>
                 <span>🔀</span>
             </button>
             <div class="play">
                 <button @click="playHandler">
-                    <span>{{isPlaying?'◼':'▶'}}</span>
+                    <span>{{ isPlaying ? '◼' : '▶' }}</span>
                 </button>
             </div>
             <div class="bpm">
                 <button @click="BPM -= 5">
-                   <span>➖</span>
+                    <span>➖</span>
                 </button>
-                <input type="text" :value="BPM" readonly style="color: white;"/>
+                <input type="text" :value="BPM" readonly style="color: white;" />
                 <span>bpm</span>
                 <button @click="BPM += 5">
-                   <span>➕</span>
+                    <span>➕</span>
                 </button>
             </div>
             <button>
@@ -98,7 +98,6 @@
 <script setup>
 import * as Tone from "tone";
 import { ref, reactive } from "vue";
-import Snare from '@/lib/snare.js'
 let tab = ref(0);
 let isPlaying = ref(false)
 let BPM = ref(120)
@@ -144,25 +143,45 @@ const hihat = new Tone.NoiseSynth({
         sustain: 0.0001,
     },
 }).toDestination();
-const snare = new Snare({ volume: -6 }).toDestination()
-// const poly = new Tone.PolySynth(8, Tone.Synth, {
-//     oscillator: {
-//         type: 'triangle'
-//     },
-//     envelope: {
-//         attack: 0.001,
-//         decay: 0.1,
-//         sustain: 0.3,
-//         release: 0.02
-//     }
-// }).toDestination()
+// ----snare start---------
+const lowPass = new Tone.Filter({
+    frequency: 11000,
+}).toDestination();
+const noise = new Tone.NoiseSynth({
+    volume: -12,
+    noise: {
+        type: 'pink',
+        playbackRate: 3,
+    },
+    envelope: {
+        attack: 0.001,
+        decay: 0.13,
+        sustain: 0,
+        release: 0.03,
+    },
+}).connect(lowPass);
+const osc = new Tone.Oscillator().toDestination();
+osc.partials = [0, 2, 3, 4]
+const env = new Tone.Envelope({
+    attack: 0.001,
+    decay: 0.17,
+    sustain: 0.0001,
+    release: 0.08,
+    releaseCurve: 'exponential'
+}).toDestination();
+const poly = new Tone.PolySynth({osc,env}).toDestination();
+function snareTrigger(time){
+    noise.triggerAttack(time)
+    poly.triggerAttackRelease(['C2', 'D#2', 'G2'], '16n', time)
+}
+// ----snare end---------
 // 乐器音量
 kick.volume.value = 6
 hihat.volume.value = -2
 tomL.volume.value = 0
 tomM.volume.value = 0
 tomH.volume.value = 0
-// poly.set('volume', 2)
+poly.volume.value = -10
 //建立播放系统
 Tone.Transport.bpm.value = BPM.value
 Tone.Transport.scheduleRepeat((time) => {
@@ -170,10 +189,10 @@ Tone.Transport.scheduleRepeat((time) => {
     const i = index.value
     if (sequence.drum.kick[i]) kick.triggerAttackRelease('C2', '4n', time)
     if (sequence.drum.hihat[i]) hihat.triggerAttackRelease('8n', time)
-    if (sequence.drum.snare[i]) snare.trigger(time)
-    if(sequence.drum.tomL[i])tomL.triggerAttackRelease('E2', '4n', time)
-    if(sequence.drum.tomM[i])tomL.triggerAttackRelease('G2', '4n', time)
-    if(sequence.drum.tomH[i])tomL.triggerAttackRelease('A#2', '4n', time)
+    if (sequence.drum.snare[i]) snareTrigger(time)
+    if (sequence.drum.tomL[i]) tomL.triggerAttackRelease('E2', '4n', time)
+    if (sequence.drum.tomM[i]) tomM.triggerAttackRelease('G2', '4n', time)
+    if (sequence.drum.tomH[i]) tomH.triggerAttackRelease('A#2', '4n', time)
 }, '16n')
 
 
@@ -210,7 +229,7 @@ function stop() {
         width: 100%;
         // background-color: #bfa;
         .bpm {
-            span{
+            span {
                 color: white;
             }
         }
