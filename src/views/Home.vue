@@ -1,18 +1,22 @@
 <template>
   <div>
     <div id="popUpEl">
-      <h2 id="countryEl">中国</h2>
-      <p id="populationEl">14亿人</p>
+      <h2 id="countryEl"></h2>
+      <p id="populationEl"></p>
     </div>
     <div id="home"></div>
   </div>
 </template>
 
 <script setup>
-import { onMounted } from 'vue'
+import { onMounted, onUnmounted } from 'vue'
 import { initThree } from './Home/index'
 onMounted(() => {
   initThree()
+  console.log("组件挂载")
+})
+onUnmounted(()=>{
+  console.log("组件销毁")
 })
 
 </script>

@@ -30,51 +30,15 @@ function leave(e) {
 
 <template>
   <div class="app">
-    <router-view></router-view>
+    <router-view />
     <div class="glass">
       <ul class="dock">
-        <li
-          @mousemove="move"
-          @mouseleave="leave"
-          @click="router.replace({ path: '/guitar' })"
-        >
-          🎸
-        </li>
-        <li
-          @mousemove="move"
-          @mouseleave="leave"
-          @click="router.replace({ path: '/piano' })"
-        >
-          🎹
-        </li>
-        <li
-          @mousemove="move"
-          @mouseleave="leave"
-          @click="router.replace({ path: '/drum' })"
-        >
-          🥁
-        </li>
-        <li
-          @mousemove="move"
-          @mouseleave="leave"
-          @click="router.replace({ path: '/camera' })"
-        >
-          🎦
-        </li>
-        <li
-          @mousemove="move"
-          @mouseleave="leave"
-          @click="router.replace({ path: '/fox' })"
-        >
-          🦊
-        </li>
-        <li
-          @mousemove="move"
-          @mouseleave="leave"
-          @click="router.replace({ path: '/home' })"
-        >
-          🌏
-        </li>
+        <li @mousemove="move" @mouseleave="leave" @click="router.replace({ path: '/guitar' })">🎸</li>
+        <li @mousemove="move" @mouseleave="leave" @click="router.replace({ path: '/piano' })">🎹</li>
+        <li @mousemove="move" @mouseleave="leave" @click="router.replace({ path: '/drum' })">🥁</li>
+        <li @mousemove="move" @mouseleave="leave" @click="router.replace({ path: '/camera' })">🎦</li>
+        <li @mousemove="move" @mouseleave="leave" @click="router.replace({ path: '/fox' })">🦊</li>
+        <li @mousemove="move" @mouseleave="leave" @click="router.replace({ path: '/home' })">🌏</li>
       </ul>
     </div>
   </div>
