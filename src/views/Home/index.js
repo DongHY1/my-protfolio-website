@@ -9,9 +9,9 @@ import countries from "./countries.json";
 export function initThree() {
   console.log(countries);
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(
+  let camera = new THREE.PerspectiveCamera(
     75,
-    innerWidth / innerHeight,
+    window.innerWidth / window.innerHeight,
     0.1,
     1000
   );
@@ -22,7 +22,7 @@ export function initThree() {
   });
   //   开启HIDPI设置:https://blog.skk.moe/post/hidpi-what-why-how/
   renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(innerWidth, innerHeight);
+  renderer.setSize(window.innerWidth, window.innerHeight);
   const div = document.querySelector("#home");
   div.appendChild(renderer.domElement);
   //   创建一个球体
@@ -166,52 +166,20 @@ export function initThree() {
     mouse.xPrev = clientX
     mouse.yPrev = clientY
   })
-  window.addEventListener("mouseup",({clientX,clientY})=>{
+  window.addEventListener("mouseup",()=>{
     mouse.down=false
   })
+  window.addEventListener('resize',()=>{
+    renderer.setSize(window.innerWidth, window.innerHeight);
+     camera = new THREE.PerspectiveCamera(
+      75,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      1000
+    );
+    camera.position.z = 15;
+  })
   
-}
-/**
- *
- * @param {*} latitude 纬度 N为正
- * @param {*} longitude 经度 E为正
- * @param {*} radius 球体半径
- * @param {*} group 分组
- */
-function createPoint(latitude, longitude, radius, group, country, population) {
-  const point = new THREE.Mesh(
-    new THREE.BoxGeometry(0.2, 0.2, 0.8),
-    new THREE.MeshBasicMaterial({
-      color: "#47A3F5",
-      opacity: 0.4,
-      transparent: true,
-    })
-  );
-  // 坐标转换
-  const transformLatitude = (latitude / 180) * Math.PI;
-  const transformLongitude = (longitude / 180) * Math.PI;
-  const x = radius * Math.cos(transformLatitude) * Math.sin(transformLongitude);
-  const y = radius * Math.sin(transformLatitude);
-  const z = radius * Math.cos(transformLatitude) * Math.cos(transformLongitude);
-  // 更新位置
-  point.position.x = x;
-  point.position.y = y;
-  point.position.z = z;
-  point.lookAt(0, 0, 0);
-  point.geometry.applyMatrix4(new THREE.Matrix4().makeTranslation(0, 0, -0.4));
-  // 添加坐标
-  // 生长动画
-  gsap.to(point.scale, {
-    z: 0,
-    duration: 2,
-    yoyo: true,
-    repeat: -1,
-    ease: "linear",
-    delay: Math.random(),
-  });
-  group.add(point);
-  point.country = country;
-  point.population = population;
 }
 function createCountriePoints(countries,group,radius) {
   countries.forEach((country) => {
