@@ -105,9 +105,9 @@ export function initThree() {
  */
 function createPoint(latitude, longitude,radius,group) {
   const point = new THREE.Mesh(
-    new THREE.SphereGeometry(0.1, 50, 50),
+    new THREE.BoxGeometry(0.1, 0.1, 0.8),
     new THREE.MeshBasicMaterial({
-      color: "#ff0000",
+      color: "#47A3F5",
     })
   );
   // 坐标转换
@@ -120,6 +120,17 @@ function createPoint(latitude, longitude,radius,group) {
   point.position.x = x
   point.position.y = y
   point.position.z = z
+  point.lookAt(0,0,0)
+  point.geometry.applyMatrix4(new THREE.Matrix4().makeTranslation(0, 0, -0.4))
   // 添加坐标
+  // 生长动画
+  gsap.to(point.scale,{
+    z:0,
+    duration:2,
+    yoyo:true,
+    repeat:-1,
+    ease:'linear',
+    delay:Math.random()
+  })
   group.add(point)
 }
