@@ -80,9 +80,16 @@ export function initThree() {
   createCountriePoints(countries,group,5)
   // 旋转地球正确角度
   sphere.rotation.y = -Math.PI / 2;
+  group.rotation.offset = {
+    x:0,
+    y:0
+  }
   const mouse = {
     x: 0,
     y: 0,
+    xPrev:undefined,
+    yPrev:undefined,
+    down:false
   };
   // 实现鼠标移入长方体发光效果
   const raycaster = new THREE.Raycaster();
@@ -94,7 +101,7 @@ export function initThree() {
   function animate() {
     requestAnimationFrame(animate);
     renderer.render(scene, camera);
-    group.rotation.y += 0.002;
+    // group.rotation.y += 0.002;
     // group.rotation.y = mouse.x*0.5;
     // gsap.to(group.rotation, {
     //   x: -mouse.y * 1.3,
@@ -128,6 +135,7 @@ export function initThree() {
   }
   animate();
   window.addEventListener("mousemove", (event) => {
+    event.preventDefault()
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
   });
@@ -137,8 +145,31 @@ export function initThree() {
     gsap.set(popUpEl, {
       x: event.clientX,
       y: event.clientY,
+      duration:2
     });
+    if(mouse.down){
+      event.preventDefault()
+      const  deltaX = event.clientX - mouse.xPrev
+      const  deltaY = event.clientY - mouse.yPrev
+      group.rotation.offset.x += deltaY*0.005
+      group.rotation.offset.y += deltaX*0.005
+      gsap.to(group.rotation,{
+        x:group.rotation.offset.x,
+        y:group.rotation.offset.y
+      })
+      mouse.xPrev = event.clientX
+      mouse.yPrev = event.clientY
+    }
   });
+  window.addEventListener("mousedown",({clientX,clientY})=>{
+    mouse.down=true
+    mouse.xPrev = clientX
+    mouse.yPrev = clientY
+  })
+  window.addEventListener("mouseup",({clientX,clientY})=>{
+    mouse.down=false
+  })
+  
 }
 /**
  *
