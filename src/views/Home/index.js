@@ -76,8 +76,8 @@ export function initThree() {
   // 旋转地球正确角度
   sphere.rotation.y = -Math.PI/2
   const mouse = {
-    x: undefined,
-    y: undefined,
+    x: 0,
+    y: 0,
   };
   function animate() {
     requestAnimationFrame(animate);
