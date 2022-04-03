@@ -184,8 +184,12 @@ function createPoint(latitude, longitude, radius, group, country, population) {
 }
 function createCountriePoints(countries,group,radius) {
   countries.forEach((country) => {
+    const scale = country.population / 100000000
+    const Xscale = scale*0.02
+    const Yscale = scale*0.02
+    const Zscale = scale * 0.8
     const point = new THREE.Mesh(
-      new THREE.BoxGeometry(0.2, 0.2, 0.8),
+      new THREE.BoxGeometry(Math.max(0.1,Xscale), Math.max(0.1,Yscale), Math.max(0.4,Zscale)),
       new THREE.MeshBasicMaterial({
         color: "#47A3F5",
         opacity: 0.4,
@@ -193,8 +197,8 @@ function createCountriePoints(countries,group,radius) {
       })
     );
     // 坐标转换
-    const latitude = country.latlng[1]
-    const longitude = country.latlng[0]
+    const latitude = country.latlng[0]
+    const longitude = country.latlng[1]
     const transformLatitude = (latitude / 180) * Math.PI;
     const transformLongitude = (longitude / 180) * Math.PI;
     const x =radius * Math.cos(transformLatitude) * Math.sin(transformLongitude);
@@ -219,6 +223,6 @@ function createCountriePoints(countries,group,radius) {
     });
     group.add(point);
     point.country = country.name.common;
-    point.population = country.population;
+    point.population = new Intl.NumberFormat().format(country.population);
   });
 }
