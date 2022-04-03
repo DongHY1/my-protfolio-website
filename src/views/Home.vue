@@ -32,8 +32,6 @@ onMounted(() => {
   border-radius: 15px;
   color: white;
   opacity: 0.75;
-  width: 100px;
-  height: 100px;
   position: absolute;
   top: 0;
   left: 0;
