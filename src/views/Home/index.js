@@ -70,30 +70,52 @@ export function initThree() {
   const stars = new THREE.Points(starGeometry, starMeterial);
   scene.add(stars);
   // 添加地点
-  createPoint(35,103,5,group)
-  createPoint(-14,-52,5,group)
-  createPoint(20,78,5,group)
+  createPoint(35, 103, 5, group);
+  createPoint(-14, -52, 5, group);
+  createPoint(20, 78, 5, group);
   // 旋转地球正确角度
-  sphere.rotation.y = -Math.PI/2
+  sphere.rotation.y = -Math.PI / 2;
   const mouse = {
     x: 0,
     y: 0,
   };
+  // 实现鼠标移入长方体发光效果
+  const raycaster = new THREE.Raycaster();
+  const pointer = new THREE.Vector2();
   function animate() {
     requestAnimationFrame(animate);
     renderer.render(scene, camera);
-    // sphere.rotation.y += 0.001;
+    group.rotation.y += 0.002;
     // group.rotation.y = mouse.x*0.5;
-    gsap.to(group.rotation, {
-      x: -mouse.y * 1.3,
-      y: mouse.x * 1.5,
-      duration: 2,
+    // gsap.to(group.rotation, {
+    //   x: -mouse.y * 1.3,
+    //   y: mouse.x * 1.5,
+    //   duration: 2,
+    // });
+    // 通过摄像机和鼠标位置更新射线
+    raycaster.setFromCamera(pointer, camera);
+    // 计算物体和射线的焦点
+    const intersects = raycaster.intersectObjects(group.children.filter((item)=>{
+      return item.geometry.type === 'BoxGeometry'
+    }));
+
+    group.children.forEach((item) => {
+      item.material.opacity = 0.4;
     });
+    for (let i = 0; i < intersects.length; i++) {
+      console.log("gogo")
+      intersects[i].object.material.opacity = 1;
+    }
+    renderer.render(scene, camera);
   }
   animate();
-  addEventListener("mousemove", (event) => {
-    mouse.x = (event.clientX / innerWidth) * 2 - 1;
-    mouse.y = (event.clientX / innerHeight) * 2 - 1;
+  window.addEventListener("mousemove", (event) => {
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(event.clientX / window.innerHeight) * 2 + 1;
+  });
+  window.addEventListener("pointermove", (event) => {
+    pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
+    pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
   });
 }
 /**
@@ -103,11 +125,13 @@ export function initThree() {
  * @param {*} radius 球体半径
  * @param {*} group 分组
  */
-function createPoint(latitude, longitude,radius,group) {
+function createPoint(latitude, longitude, radius, group) {
   const point = new THREE.Mesh(
-    new THREE.BoxGeometry(0.1, 0.1, 0.8),
+    new THREE.BoxGeometry(0.2, 0.2, 0.8),
     new THREE.MeshBasicMaterial({
       color: "#47A3F5",
+      opacity: 0.4,
+      transparent: true,
     })
   );
   // 坐标转换
@@ -117,20 +141,20 @@ function createPoint(latitude, longitude,radius,group) {
   const y = radius * Math.sin(transformLatitude);
   const z = radius * Math.cos(transformLatitude) * Math.cos(transformLongitude);
   // 更新位置
-  point.position.x = x
-  point.position.y = y
-  point.position.z = z
-  point.lookAt(0,0,0)
-  point.geometry.applyMatrix4(new THREE.Matrix4().makeTranslation(0, 0, -0.4))
+  point.position.x = x;
+  point.position.y = y;
+  point.position.z = z;
+  point.lookAt(0, 0, 0);
+  point.geometry.applyMatrix4(new THREE.Matrix4().makeTranslation(0, 0, -0.4));
   // 添加坐标
   // 生长动画
-  gsap.to(point.scale,{
-    z:0,
-    duration:2,
-    yoyo:true,
-    repeat:-1,
-    ease:'linear',
-    delay:Math.random()
-  })
-  group.add(point)
+  gsap.to(point.scale, {
+    z: 0,
+    duration: 2,
+    yoyo: true,
+    repeat: -1,
+    ease: "linear",
+    delay: Math.random(),
+  });
+  group.add(point);
 }
