@@ -5,7 +5,9 @@ import fragmentShader from "./shaders/fragment.glsl";
 import atmosphereVertexShader from "./shaders/atmosphereVertex.glsl";
 import atmosphereFragmentShader from "./shaders/atmosphereFragment.glsl";
 import gsap from "gsap";
+import countries from "./countries.json";
 export function initThree() {
+  console.log(countries);
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(
     75,
@@ -70,11 +72,12 @@ export function initThree() {
   const stars = new THREE.Points(starGeometry, starMeterial);
   scene.add(stars);
   // 添加地点
-  createPoint(35, 103, 5, group,'中国','14亿');
-  createPoint(38, -97, 5, group,'美国','5亿');
-  createPoint(23, -102, 5, group,'墨西哥','1亿');
-  createPoint(15, 80, 5, group,'印度','13亿');
-  createPoint(44, 144, 5, group,'日本','2000万');
+  // createPoint(35, 103, 5, group, "中国", "14亿");
+  // createPoint(38, -97, 5, group, "美国", "5亿");
+  // createPoint(23, -102, 5, group, "墨西哥", "1亿");
+  // createPoint(15, 80, 5, group, "印度", "13亿");
+  // createPoint(44, 144, 5, group, "日本", "2000万");
+  createCountriePoints(countries,group,5)
   // 旋转地球正确角度
   sphere.rotation.y = -Math.PI / 2;
   const mouse = {
@@ -85,9 +88,9 @@ export function initThree() {
   const raycaster = new THREE.Raycaster();
   const pointer = new THREE.Vector2();
   // 拿到html元素
-  const popUpEl = document.querySelector('#popUpEl')
-  const countryEl = document.querySelector('#countryEl')
-  const populationEl = document.querySelector('#populationEl')
+  const popUpEl = document.querySelector("#popUpEl");
+  const countryEl = document.querySelector("#countryEl");
+  const populationEl = document.querySelector("#populationEl");
   function animate() {
     requestAnimationFrame(animate);
     renderer.render(scene, camera);
@@ -101,23 +104,25 @@ export function initThree() {
     // 通过摄像机和鼠标位置更新射线
     raycaster.setFromCamera(pointer, camera);
     // 计算物体和射线的焦点
-    const intersects = raycaster.intersectObjects(group.children.filter((item)=>{
-      return item.geometry.type === 'BoxGeometry'
-    }));
+    const intersects = raycaster.intersectObjects(
+      group.children.filter((item) => {
+        return item.geometry.type === "BoxGeometry";
+      })
+    );
 
     group.children.forEach((item) => {
       item.material.opacity = 0.4;
     });
-    gsap.set(popUpEl,{
-      display:'none'
-    })
+    gsap.set(popUpEl, {
+      display: "none",
+    });
     for (let i = 0; i < intersects.length; i++) {
       intersects[i].object.material.opacity = 1;
-      gsap.set(popUpEl,{
-        display:'block'
-      })
-      countryEl.innerHTML = intersects[i].object.country
-      populationEl.innerHTML = intersects[i].object.population
+      gsap.set(popUpEl, {
+        display: "block",
+      });
+      countryEl.innerHTML = intersects[i].object.country;
+      populationEl.innerHTML = intersects[i].object.population;
     }
     renderer.render(scene, camera);
   }
@@ -129,10 +134,10 @@ export function initThree() {
   window.addEventListener("pointermove", (event) => {
     pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
     pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
-    gsap.set(popUpEl,{
-      x:event.clientX,
-      y:event.clientY
-    })
+    gsap.set(popUpEl, {
+      x: event.clientX,
+      y: event.clientY,
+    });
   });
 }
 /**
@@ -142,7 +147,7 @@ export function initThree() {
  * @param {*} radius 球体半径
  * @param {*} group 分组
  */
-function createPoint(latitude, longitude, radius, group,country,population) {
+function createPoint(latitude, longitude, radius, group, country, population) {
   const point = new THREE.Mesh(
     new THREE.BoxGeometry(0.2, 0.2, 0.8),
     new THREE.MeshBasicMaterial({
@@ -174,6 +179,46 @@ function createPoint(latitude, longitude, radius, group,country,population) {
     delay: Math.random(),
   });
   group.add(point);
-  point.country = country
-  point.population = population
+  point.country = country;
+  point.population = population;
+}
+function createCountriePoints(countries,group,radius) {
+  countries.forEach((country) => {
+    const point = new THREE.Mesh(
+      new THREE.BoxGeometry(0.2, 0.2, 0.8),
+      new THREE.MeshBasicMaterial({
+        color: "#47A3F5",
+        opacity: 0.4,
+        transparent: true,
+      })
+    );
+    // 坐标转换
+    const latitude = country.latlng[1]
+    const longitude = country.latlng[0]
+    const transformLatitude = (latitude / 180) * Math.PI;
+    const transformLongitude = (longitude / 180) * Math.PI;
+    const x =radius * Math.cos(transformLatitude) * Math.sin(transformLongitude);
+    const y =radius * Math.sin(transformLatitude);
+    const z =radius * Math.cos(transformLatitude) * Math.cos(transformLongitude);
+    // 更新位置
+    point.position.x = x;
+    point.position.y = y;
+    point.position.z = z;
+    point.lookAt(0, 0, 0);
+    point.geometry.applyMatrix4(
+      new THREE.Matrix4().makeTranslation(0, 0, -0.4)
+    );
+    // 生长动画
+    gsap.to(point.scale, {
+      z: 0,
+      duration: 2,
+      yoyo: true,
+      repeat: -1,
+      ease: "linear",
+      delay: Math.random(),
+    });
+    group.add(point);
+    point.country = country.name.common;
+    point.population = country.population;
+  });
 }
