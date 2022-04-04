@@ -12,7 +12,6 @@ import {
   Points,
   Raycaster,
   Vector2,
-  Vector4,
   BoxGeometry,
   MeshBasicMaterial,
   Matrix4,
@@ -36,6 +35,7 @@ export function initThree() {
     1000
   );
   camera.position.z = 15;
+  console.log("添加场景和摄像机")
   const renderer = new WebGLRenderer({
     //   添加抗锯齿
     antialias: true,
@@ -45,6 +45,7 @@ export function initThree() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   const div = document.querySelector("#home");
   div.appendChild(renderer.domElement);
+  console.log("添加渲染")
   //   创建一个球体
   const sphere = new Mesh(
     new SphereGeometry(5, 50, 50),
@@ -60,6 +61,7 @@ export function initThree() {
       // map: new THREE.TextureLoader().load(earth),
     })
   );
+  console.log("添加球")
   //   创建大气层
   const atmosphere = new Mesh(
     new SphereGeometry(5, 50, 50),
@@ -75,6 +77,7 @@ export function initThree() {
   const group = new Group();
   group.add(sphere);
   scene.add(group);
+  console.log("添加大气层")
   // 星空背景
   const starVertices = [];
   for (let i = 0; i < 10000; i++) {
@@ -91,6 +94,7 @@ export function initThree() {
   const starMeterial = new PointsMaterial({ color: 0xffffff });
   const stars = new Points(starGeometry, starMeterial);
   scene.add(stars);
+  console.log("添加星空")
   // 添加地点
   // createPoint(35, 103, 5, group, "中国", "14亿");
   // createPoint(38, -97, 5, group, "美国", "5亿");
@@ -98,6 +102,7 @@ export function initThree() {
   // createPoint(15, 80, 5, group, "印度", "13亿");
   // createPoint(44, 144, 5, group, "日本", "2000万");
   createCountriePoints(countries, group, 5);
+  console.log("添加地点")
   // 旋转地球正确角度
   sphere.rotation.y = -Math.PI / 2;
   group.rotation.offset = {
@@ -120,7 +125,7 @@ export function initThree() {
   const populationEl = document.querySelector("#populationEl");
   function animate() {
     requestAnimationFrame(animate);
-    renderer.render(scene, camera);
+    // renderer.render(scene, camera);
     // group.rotation.y += 0.002;
     // group.rotation.y = mouse.x*0.5;
     // gsap.to(group.rotation, {

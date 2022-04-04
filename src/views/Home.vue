@@ -9,14 +9,10 @@
 </template>
 
 <script setup>
-import { onMounted, onUnmounted } from 'vue'
+import { onMounted} from 'vue'
 import { initThree } from './Home/index'
 onMounted(() => {
   initThree()
-  console.log("组件挂载")
-})
-onUnmounted(()=>{
-  console.log("组件销毁")
 })
 
 </script>
