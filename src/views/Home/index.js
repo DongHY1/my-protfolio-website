@@ -206,6 +206,7 @@ export function initThree() {
   });
 }
 function createCountriePoints(countries, group, radius) {
+  
   countries.forEach((country) => {
     const scale = country.population / 100000000;
     const Xscale = scale * 0.02;
@@ -224,6 +225,7 @@ function createCountriePoints(countries, group, radius) {
       })
     );
     // 坐标转换
+    console.log(country.latlng)
     const latitude = country.latlng[0];
     const longitude = country.latlng[1];
     const transformLatitude = (latitude / 180) * Math.PI;
@@ -249,7 +251,7 @@ function createCountriePoints(countries, group, radius) {
       delay: Math.random(),
     });
     group.add(point);
-    point.country = country.name.common;
+    point.country = country.name;
     point.population = new Intl.NumberFormat().format(country.population);
   });
 }
