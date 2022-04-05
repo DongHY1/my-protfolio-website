@@ -25,7 +25,6 @@ import fragmentShader from "./shaders/fragment.glsl?raw";
 import atmosphereVertexShader from "./shaders/atmosphereVertex.glsl?raw";
 import atmosphereFragmentShader from "./shaders/atmosphereFragment.glsl?raw";
 import gsap from "gsap";
-import countries from "./countries.json";
 export function initThree() {
   const scene = new Scene();
   let camera = new PerspectiveCamera(
@@ -35,7 +34,6 @@ export function initThree() {
     1000
   );
   camera.position.z = 15;
-  console.log("添加场景和摄像机")
   const renderer = new WebGLRenderer({
     //   添加抗锯齿
     antialias: true,
@@ -45,7 +43,6 @@ export function initThree() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   const div = document.querySelector("#home");
   div.appendChild(renderer.domElement);
-  console.log("添加渲染")
   //   创建一个球体
   const sphere = new Mesh(
     new SphereGeometry(5, 50, 50),
@@ -61,7 +58,6 @@ export function initThree() {
       // map: new THREE.TextureLoader().load(earth),
     })
   );
-  console.log("添加球")
   //   创建大气层
   const atmosphere = new Mesh(
     new SphereGeometry(5, 50, 50),
@@ -77,7 +73,6 @@ export function initThree() {
   const group = new Group();
   group.add(sphere);
   scene.add(group);
-  console.log("添加大气层")
   // 星空背景
   const starVertices = [];
   for (let i = 0; i < 10000; i++) {
@@ -94,15 +89,8 @@ export function initThree() {
   const starMeterial = new PointsMaterial({ color: 0xffffff });
   const stars = new Points(starGeometry, starMeterial);
   scene.add(stars);
-  console.log("添加星空")
   // 添加地点
-  // createPoint(35, 103, 5, group, "中国", "14亿");
-  // createPoint(38, -97, 5, group, "美国", "5亿");
-  // createPoint(23, -102, 5, group, "墨西哥", "1亿");
-  // createPoint(15, 80, 5, group, "印度", "13亿");
-  // createPoint(44, 144, 5, group, "日本", "2000万");
-  createCountriePoints(countries, group, 5);
-  console.log("添加地点")
+  getCountries(group, 5);
   // 旋转地球正确角度
   sphere.rotation.y = -Math.PI / 2;
   group.rotation.offset = {
@@ -205,9 +193,11 @@ export function initThree() {
     camera.position.z = 15;
   });
 }
-function createCountriePoints(countries, group, radius) {
-  
-  countries.forEach((country) => {
+async function getCountries(group, radius){
+  // 需要本地用JSON-SERVER开启服务
+  const countries = await fetch('http://localhost:3000/countries')
+  const res = await countries.json()
+  res.forEach((country)=>{
     const scale = country.population / 100000000;
     const Xscale = scale * 0.02;
     const Yscale = scale * 0.02;
@@ -225,7 +215,6 @@ function createCountriePoints(countries, group, radius) {
       })
     );
     // 坐标转换
-    console.log(country.latlng)
     const latitude = country.latlng[0];
     const longitude = country.latlng[1];
     const transformLatitude = (latitude / 180) * Math.PI;
@@ -253,5 +242,6 @@ function createCountriePoints(countries, group, radius) {
     group.add(point);
     point.country = country.name;
     point.population = new Intl.NumberFormat().format(country.population);
-  });
+    
+  })
 }
