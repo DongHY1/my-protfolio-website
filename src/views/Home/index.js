@@ -64,7 +64,7 @@ export function initThree() {
     new ShaderMaterial({
       vertexShader: atmosphereVertexShader,
       fragmentShader: atmosphereFragmentShader,
-      blending:AdditiveBlending,
+      blending: AdditiveBlending,
       side: BackSide,
     })
   );
@@ -193,10 +193,10 @@ export function initThree() {
     camera.position.z = 15;
   });
 }
-async function getCountries(group, radius){
-  const countries = await fetch('http://159.75.0.182:3000/countries')
-  const res = await countries.json()
-  res.forEach((country)=>{
+async function getCountries(group, radius) {
+  const countries = await fetch("http://159.75.0.182:3000/countries");
+  const res = await countries.json();
+  res.forEach((country) => {
     const scale = country.population / 100000000;
     const Xscale = scale * 0.02;
     const Yscale = scale * 0.02;
@@ -241,6 +241,5 @@ async function getCountries(group, radius){
     group.add(point);
     point.country = country.name;
     point.population = new Intl.NumberFormat().format(country.population);
-    
-  })
+  });
 }

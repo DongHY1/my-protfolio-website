@@ -28,7 +28,7 @@ onMounted(() => {
 }
 #popUpEl {
   z-index: 999;
-  background-color: black;
+  // background-color: black;
   border-radius: 15px;
   color: white;
   opacity: 0.75;
@@ -36,5 +36,8 @@ onMounted(() => {
   top: 0;
   left: 0;
   text-align: center;
+  height: 30px;
+  margin-bottom: 10px;
 }
+
 </style>

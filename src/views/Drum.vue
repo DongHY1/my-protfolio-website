@@ -1,30 +1,19 @@
 <template>
     <div class="sequencer">
         <div class="header" :class="{ drum: tab === 0, lead: tab === 1 }">
-            <button @click="handleToggleInstrument">
-                <span>{{ tab === 0 ? '🥁' : '🎹' }}</span>
-            </button>
-            <button @click="handleRandomPlay">
-                <span>🔀</span>
-            </button>
+            <span @click="handleToggleInstrument">{{ tab === 0 ? '🥁' : '🎹' }}</span>
+            <span @click="handleRandomPlay">🔀</span>
+
             <div class="play">
-                <button @click="handlePlay">
-                    <span>{{ isPlaying ? '◼' : '▶' }}</span>
-                </button>
+                <span @click="handlePlay">{{ isPlaying ? '⏸' : '👏' }}</span>
             </div>
             <div class="bpm">
-                <button @click="handleBPMDecrease">
-                    <span>➖</span>
-                </button>
-                <span style="color: white;">{{BPM}}</span>
+                <span @click="handleBPMDecrease">➖</span>
+                <span style="color: white;">{{ BPM }}</span>
                 <span>bpm</span>
-                <button @click="handleBPMIncrease">
-                    <span>➕</span>
-                </button>
+                <span @click="handleBPMIncrease">➕</span>
             </div>
-            <button @click="handleClearPlay">
-                <span>🚮</span>
-            </button>
+            <span @click="handleClearPlay">🚮</span>
         </div>
         <div class="pad">
             <div class="timeline">
@@ -208,16 +197,16 @@ function getRandomArray(isTwoDimensional) {
         // 二维数组操作
         const arr = getEmptyArray(leadArrayConfig)
         let bool
-        for(let i = 0;i<arr.length;i++){
-            for(let j =0;j<arr[0].length;j++){
-                if(Math.random()<=0.3){
+        for (let i = 0; i < arr.length; i++) {
+            for (let j = 0; j < arr[0].length; j++) {
+                if (Math.random() <= 0.3) {
                     bool = true
-                }else{
-                    bool=false
+                } else {
+                    bool = false
                 }
                 arr[i][j] = bool
             }
-        } 
+        }
         return arr
     } else {
         // 一维数组操作
@@ -351,15 +340,16 @@ function stop() {
     background-color: black;
     width: 100vw;
     height: 80vh;
-    overflow: hidden;
+    margin-top: 50px;
+    // overflow: hidden;
     .header {
-        margin: 0 auto;
         display: inline-flex;
         flex-flow: row nowrap;
         justify-content: space-between;
         align-content: center;
         width: 100%;
-        // background-color: #bfa;
+        height: 20px;
+
         .bpm {
             span {
                 color: white;
@@ -368,10 +358,12 @@ function stop() {
     }
     .pad {
         .timeline {
+            margin-top: 10px;
+            height: 10px;
             .time {
                 display: inline-block;
                 width: 6%;
-                height: 3px;
+                height: 2px;
                 background-color: #ff5733;
                 opacity: 0.2;
                 margin: 2px 2px;
@@ -395,6 +387,9 @@ function stop() {
                 flex-wrap: nowrap;
                 justify-content: flex-start;
                 align-items: center;
+                height: 110px;
+
+                padding-top: 5px;
                 .item {
                     height: 10.5vh;
                     width: 10vw;
@@ -402,7 +397,7 @@ function stop() {
                     border: 1px solid black;
                     border-radius: 10px;
                     flex: 1;
-                    background-color: white;
+                    background-color: whitesmoke;
                 }
                 .active {
                     background: linear-gradient(to right, #96e6a1, #d4fc79);
@@ -416,12 +411,13 @@ function stop() {
         color: #222222;
         line-height: 100%;
         font-size: 3vw;
-        width: 6vw;
-        height: 6vw;
+        width: 3vw;
+        height: 3vw;
         border: 0;
         border-radius: 10%;
         margin: 1px;
         cursor: pointer;
+        // background-color: #222222;
     }
     input {
         width: 6vw;
