@@ -27,7 +27,7 @@ import atmosphereFragmentShader from "./shaders/atmosphereFragment.glsl?raw";
 import gsap from "gsap";
 export function initThree() {
   const scene = new Scene();
-  let camera = new PerspectiveCamera(
+  const camera = new PerspectiveCamera(
     75,
     window.innerWidth / window.innerHeight,
     0.1,
@@ -215,16 +215,14 @@ async function getCountries(group, radius) {
         transparent: true,
       })
     );
-    // 坐标转换
+    // 坐标转换 https://blog.csdn.net/ruangong1203/article/details/75994424
     const latitude = country.latlng[0];
     const longitude = country.latlng[1];
     const transformLatitude = (latitude / 180) * Math.PI;
     const transformLongitude = (longitude / 180) * Math.PI;
-    const x =
-      radius * Math.cos(transformLatitude) * Math.sin(transformLongitude);
-    const y = radius * Math.sin(transformLatitude);
-    const z =
-      radius * Math.cos(transformLatitude) * Math.cos(transformLongitude);
+    const x =radius * Math.cos(transformLatitude) * Math.sin(transformLongitude);
+    const y =radius * Math.sin(transformLatitude);
+    const z =radius * Math.cos(transformLatitude) * Math.cos(transformLongitude);
     // 更新位置
     point.position.x = x;
     point.position.y = y;

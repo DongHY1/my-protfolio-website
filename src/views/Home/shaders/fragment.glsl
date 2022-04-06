@@ -1,5 +1,5 @@
-uniform sampler2D globeTexture;
-varying vec2 vertexUV;
+uniform sampler2D globeTexture; //uniform定义值：因为显卡的架构，所有线程的输入值必须统一，只读
+varying vec2 vertexUV; //varying定义值：变化
 varying vec3 vertexNormal;
 void main(){
     // gl_FragColor = vec4(0.4,1,1,1);
