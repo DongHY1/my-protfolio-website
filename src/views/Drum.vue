@@ -434,6 +434,7 @@ function stop() {
         color: black;
         font-size: 50px;
         margin-right: 5px;
+        cursor: pointer;
     }
 }
 </style>
