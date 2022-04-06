@@ -4,17 +4,19 @@
       <h2 id="countryEl"></h2>
       <p id="populationEl"></p>
     </div>
-    <div id="home"></div>
+    <canvas id="home"></canvas>
   </div>
 </template>
 
 <script setup>
-import { onMounted} from 'vue'
+import { onMounted, onUnmounted} from 'vue'
 import { initThree } from './Home/index'
 onMounted(() => {
   initThree()
 })
-
+onUnmounted(()=>{
+  
+})
 </script>
 
 <style lang="scss" scoped>

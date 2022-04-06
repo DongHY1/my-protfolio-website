@@ -37,12 +37,14 @@ export function initThree() {
   const renderer = new WebGLRenderer({
     //   添加抗锯齿
     antialias: true,
+    canvas:document.querySelector("#home")
   });
   //   开启HIDPI设置:https://blog.skk.moe/post/hidpi-what-why-how/
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  const div = document.querySelector("#home");
-  div.appendChild(renderer.domElement);
+  // const div = document.querySelector("#home");
+
+  // div.appendChild(renderer.domElement);
   //   创建一个球体
   const sphere = new Mesh(
     new SphereGeometry(5, 50, 50),
