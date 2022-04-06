@@ -194,7 +194,6 @@ export function initThree() {
   });
 }
 async function getCountries(group, radius){
-  // 需要本地用JSON-SERVER开启服务
   const countries = await fetch('http://159.75.0.182:3000/countries')
   const res = await countries.json()
   res.forEach((country)=>{

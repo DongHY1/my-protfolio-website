@@ -16,7 +16,7 @@
                 <button @click="handleBPMDecrease">
                     <span>➖</span>
                 </button>
-                <input type="number" :value="BPM" readonly style="color: white;" />
+                <span style="color: white;">{{BPM}}</span>
                 <span>bpm</span>
                 <button @click="handleBPMIncrease">
                     <span>➕</span>
