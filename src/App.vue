@@ -68,7 +68,7 @@ setInterval(() => {
         </li>
         <li>
           <h1 class="ico"
-          @click="router.push('/note')"
+          @click="router.push('/guitar')"
           >🧾</h1>
         </li>
         <li>
