@@ -13,8 +13,8 @@ const router = createRouter({
       component: ()=>import("../views/Guitar.vue"),
     },
     {
-      path: "/piano",
-      component: ()=>import("../views/Piano.vue"),
+      path: "/note",
+      component: ()=>import("../views/Note.vue"),
     },
     {
       path: "/drum",

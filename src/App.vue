@@ -45,11 +45,6 @@ setInterval(() => {
   <div class="app">
     <div class="menu-bar">
       <div class="left">
-        <img
-          src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Apple_logo_white.svg/1010px-Apple_logo_white.svg.png"
-          class="apple-logo"
-          alt
-        />
         <span class="menus active">DongHY</span>
       </div>
       <div class="right">
@@ -63,20 +58,18 @@ setInterval(() => {
           <h1
             class="ico"
             @click="router.push('/home')"
-            @mouseover="handleMouseOver(e.target, index)"
-            @mouseleave="handleMouseLeave(e.target)"
           >🌏</h1>
         </li>
         <li>
           <h1
             class="ico"
             @click="router.push('/drum')"
-            @mouseover="handleMouseOver(e.target, index)"
-            @mouseleave="handleMouseLeave(e.target)"
           >🥁</h1>
         </li>
         <li>
-          <h1 class="ico">🤷‍</h1>
+          <h1 class="ico"
+          @click="router.push('/note')"
+          >🧾</h1>
         </li>
         <li>
           <h1 class="ico">😄</h1>
@@ -111,9 +104,6 @@ body {
     justify-content: space-evenly;
     width: auto;
     margin-left: 20px;
-    .apple-logo {
-      transform: scale(1.1);
-    }
     .menus {
       height: 100%;
       display: flex;

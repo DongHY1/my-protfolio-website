@@ -6,10 +6,12 @@
     "build": "vite build",
     "preview": "vite preview --port 5050",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
-    "commit": "git-cz"
+    "commit": "git-cz",
+    "jserver":"npx json-server --port 3001 --watch src/views/Note/db.json"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.1.1",
+    "axios": "^0.26.1",
     "gsap": "^3.10.2",
     "moment": "^2.29.2",
     "normalize.css": "^8.0.1",
@@ -24,6 +26,7 @@
     "@types/rollup-plugin-visualizer": "^4.2.1",
     "@vitejs/plugin-vue": "^2.2.2",
     "@vue/eslint-config-prettier": "^7.0.0",
+    "autoprefixer": "^10.4.4",
     "commitlint": "^16.2.3",
     "commitlint-config-cz": "^0.13.3",
     "cz-conventional-changelog": "^3.3.0",

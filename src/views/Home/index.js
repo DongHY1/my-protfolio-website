@@ -27,7 +27,7 @@ import atmosphereFragmentShader from "./shaders/atmosphereFragment.glsl?raw";
 import gsap from "gsap";
 export function initThree() {
   const scene = new Scene();
-  const camera = new PerspectiveCamera(
+  let camera = new PerspectiveCamera(
     75,
     window.innerWidth / window.innerHeight,
     0.1,
