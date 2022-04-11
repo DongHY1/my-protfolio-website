@@ -7,7 +7,7 @@
     "preview": "vite preview --port 5050",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
     "commit": "git-cz",
-    "jserver":"npx json-server --port 3001 --watch src/views/Note/db.json"
+    "jserver": "npx json-server --port 3001 --watch src/views/Note/db.json"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.1.1",
@@ -15,8 +15,10 @@
     "gsap": "^3.10.2",
     "moment": "^2.29.2",
     "normalize.css": "^8.0.1",
+    "svguitar": "^1.14.0",
     "three": "^0.139.2",
     "tone": "^14.7.77",
+    "vexchords": "^1.2.0",
     "vue": "^3.2.31",
     "vue-router": "^4.0.12"
   },

@@ -1,6 +1,6 @@
 <script setup>
 import "@/assets/base.css";
-import { onMounted, ref} from "vue";
+import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import moment from 'moment'
 const router = useRouter();
@@ -38,7 +38,7 @@ onMounted(() => {
 })
 setInterval(() => {
   time.value = moment().format('MMMM Do h:mm a')
-},30000)
+}, 30000)
 </script>
 
 <template>
@@ -55,21 +55,13 @@ setInterval(() => {
     <div class="dock">
       <div class="dock-container">
         <li>
-          <h1
-            class="ico"
-            @click="router.push('/home')"
-          >🌏</h1>
+          <h1 class="ico" @click="router.push('/home')">🌏</h1>
         </li>
         <li>
-          <h1
-            class="ico"
-            @click="router.push('/drum')"
-          >🥁</h1>
+          <h1 class="ico" @click="router.push('/drum')">🥁</h1>
         </li>
         <li>
-          <h1 class="ico"
-          @click="router.push('/guitar')"
-          >🧾</h1>
+          <h1 class="ico" @click="router.push('/guitar')">🎸</h1>
         </li>
         <li>
           <h1 class="ico">😄</h1>
@@ -87,6 +79,7 @@ body {
   padding: 0;
   height: 100%;
 }
+
 .menu-bar {
   width: 100%;
   height: 30px;
@@ -98,12 +91,14 @@ body {
   justify-content: space-between;
   background: rgba(83, 83, 83, 0.4);
   backdrop-filter: blur(50px);
+
   .left {
     display: flex;
     align-items: center;
     justify-content: space-evenly;
     width: auto;
     margin-left: 20px;
+
     .menus {
       height: 100%;
       display: flex;
@@ -113,12 +108,14 @@ body {
       font-size: 14px;
     }
   }
+
   .right {
     display: flex;
     flex-direction: column-reverse;
     align-items: center;
     width: 380px;
     margin-right: 20px;
+
     .menu-time {
       height: 100%;
       width: auto;
@@ -152,6 +149,7 @@ body {
     background: rgba(83, 83, 83, 0.25);
     backdrop-filter: blur(13px);
     border: 1px solid rgba(255, 255, 255, 0.18);
+
     li {
       list-style: none;
       display: flex;
@@ -162,10 +160,12 @@ body {
       vertical-align: bottom;
       transition: 0.2s;
       transform-origin: 50% 100%;
+
       &:hover {
         margin: 0px 13px 0px 13px;
         cursor: pointer;
       }
+
       .ico {
         width: 100%;
         height: 80%;
