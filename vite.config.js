@@ -4,8 +4,8 @@ import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import { visualizer } from "rollup-plugin-visualizer";
 import viteCompression from "vite-plugin-compression";
-import importCDN from 'vite-plugin-cdn-import'
-export default defineConfig({
+import importCDN,{ autoComplete }from 'vite-plugin-cdn-import'
+  export default defineConfig({
   base: "./",
   plugins: [
     vue(),
@@ -14,11 +14,7 @@ export default defineConfig({
     viteCompression(),
     importCDN({
       modules:[
-        {
-          name:'vue',
-          var:'Vue',
-          path:`https://cdn.bootcdn.net/ajax/libs/vue/3.2.31/vue.runtime.global.prod.min.js`
-        },
+        autoComplete('vue'),
         {
           name:'vue-router',
           var:'VueRouter',
