@@ -155,7 +155,6 @@ export function initThree() {
   //   mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
   // });
   window.addEventListener("pointermove", (event) => {
-    console.log("出发了")
     pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
     pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
     gsap.set(popUpEl, {
@@ -195,29 +194,28 @@ export function initThree() {
     );
     camera.position.z = 15;
   });
-  // window.addEventListener('touchmove',(event)=>{
-  //   console.log(1)
-  //   event.clientX = event.touches[0].clientX
-  //   event.clientY = event.touches[0].clientY
-  //   const isIntersect = raycaster.intersectObject(sphere)
-  //   if(isIntersect.length!==0)mouse.down = true
-  //   if(mouse.down){
-  //     const offset = document.querySelector('#home').getBoundingClientRect().top
-  //     mouse.x = (event.clientX/innerWidth)*2-1
-  //     mouse.y = -((event.clientY-offset)/innerHeight)*2+1
-  //     gsap.set(popUpEl,{
-  //       x:event.clientX,
-  //       y:event.clientY
-  //     })
-  //     event.preventDefault()
-  //     mouse.xPrev = event.clientX
-  //     mouse.yPrev = event.clientY
-  //   }
+  window.addEventListener('touchmove',(event)=>{
+    event.clientX = event.touches[0].clientX
+    event.clientY = event.touches[0].clientY
+    const isIntersect = raycaster.intersectObject(sphere)
+    if(isIntersect.length!==0)mouse.down = true
+    if(mouse.down){
+      const offset = document.querySelector('#home').getBoundingClientRect().top
+      mouse.x = (event.clientX/innerWidth)*2-1
+      mouse.y = -((event.clientY-offset)/innerHeight)*2+1
+      gsap.set(popUpEl,{
+        x:event.clientX,
+        y:event.clientY
+      })
+      event.preventDefault()
+      mouse.xPrev = event.clientX
+      mouse.yPrev = event.clientY
+    }
     
-  // },{passive:false})
-  // window.addEventListener('touchend',()=>{
-  //   mouse.down = false
-  // })
+  },{passive:false})
+  window.addEventListener('touchend',()=>{
+    mouse.down = false
+  })
 }
 async function getCountries(group, radius) {
   const countries = await fetch("http://159.75.0.182:3000/countries");
